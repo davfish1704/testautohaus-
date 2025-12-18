@@ -18,8 +18,8 @@
       CLAIM: "Ihr zuverlässiger Partner für moderne Mobilität",
       PRIMARY_COLOR: "#0f5ea8",
       SECONDARY_COLOR: "#f5f7fb",
-      WHATSAPP_NUMBER: "491701234567", // Ländervorwahl ohne Plus
-      EMAIL: "kontakt@autohaus-sonnenberg.de",
+      WHATSAPP_NUMBER: "015731329868", // lokale Schreibweise; wird automatisch für WhatsApp formatiert
+      EMAIL: "info@trsales.net",
       ADDRESS: "Musterstraße 12, 12345 Beispielstadt",
       META_TITLE: "Autohaus Sonnenberg | Fahrzeuge, Service & Finanzierung",
       META_DESCRIPTION:
@@ -57,13 +57,20 @@
         .querySelector("img")
         .setAttribute("alt", `${CONFIG.AUTOHAUS_NAME} Fahrzeugauswahl`);
 
-      const whatsappHref = `https://wa.me/${CONFIG.WHATSAPP_NUMBER}`;
-      document.getElementById("whatsapp-link").setAttribute("href", whatsappHref);
-      document.getElementById("whatsapp-form-link").setAttribute("href", whatsappHref);
-      document.getElementById("whatsapp-text-link").setAttribute("href", whatsappHref);
-      document.getElementById("tel-link").setAttribute("href", `tel:+${CONFIG.WHATSAPP_NUMBER}`);
-      document.getElementById("email-link").setAttribute("href", `mailto:${CONFIG.EMAIL}`);
-      document.getElementById("email-link-2").setAttribute("href", `mailto:${CONFIG.EMAIL}`);
+      const sanitizedNumber = CONFIG.WHATSAPP_NUMBER.replace(/\D/g, "");
+      const intlNumber = sanitizedNumber.startsWith("0")
+        ? `49${sanitizedNumber.slice(1)}`
+        : sanitizedNumber;
+      const whatsappHref = `https://wa.me/${intlNumber}`;
+      document.querySelectorAll("[data-whatsapp-link]").forEach((el) => {
+        el.setAttribute("href", whatsappHref);
+      });
+      document.getElementById("tel-link").setAttribute("href", `tel:+${intlNumber}`);
+      document.getElementById("tel-link").textContent = CONFIG.WHATSAPP_NUMBER;
+      document.querySelectorAll("[data-email-link]").forEach((el) => {
+        el.setAttribute("href", `mailto:${CONFIG.EMAIL}`);
+        el.textContent = CONFIG.EMAIL;
+      });
       document.getElementById("vehicle-link").setAttribute("href", CONFIG.VEHICLE_LINK);
 
       const mapFrame = document.getElementById("map-frame");
@@ -561,8 +568,8 @@
         <span data-content="autohaus-name">Autohaus Sonnenberg</span>
       </div>
       <div class="nav-actions">
-        <a class="pill" id="email-link" href="mailto:kontakt@autohaus-sonnenberg.de">E-Mail</a>
-        <a class="pill primary" id="whatsapp-link" href="https://wa.me/491701234567">WhatsApp schreiben</a>
+        <a class="pill" data-email-link href="mailto:info@trsales.net">E-Mail</a>
+        <a class="pill primary" data-whatsapp-link href="https://wa.me/4915731329868">WhatsApp schreiben</a>
       </div>
     </nav>
   </header>
@@ -580,7 +587,7 @@
           </p>
           <div class="hero-cta">
             <a class="pill primary" href="#kontakt">Jetzt Kontakt aufnehmen</a>
-            <a class="pill" id="whatsapp-form-link" href="https://wa.me/491701234567">WhatsApp schreiben</a>
+            <a class="pill" data-whatsapp-link href="https://wa.me/4915731329868">WhatsApp schreiben</a>
           </div>
         </div>
         <div class="hero-image" aria-hidden="true">
@@ -717,8 +724,7 @@
               <textarea id="message" name="message" placeholder="Wie können wir helfen?" required></textarea>
             </div>
             <button type="submit">Anfrage senden</button>
-            <a class="pill primary" id="whatsapp-form-link" href="https://wa.me/491701234567">Per WhatsApp
-              anfragen</a>
+            <a class="pill primary" data-whatsapp-link href="https://wa.me/4915731329868">Per WhatsApp anfragen</a>
           </form>
           <div class="contact-info">
             <div>
@@ -727,13 +733,13 @@
             </div>
             <div>
               <strong>E-Mail</strong>
-              <a id="email-link-2" href="mailto:kontakt@autohaus-sonnenberg.de" data-content="email">kontakt@autohaus-sonnenberg.de</a>
+              <a data-email-link href="mailto:info@trsales.net" data-content="email">info@trsales.net</a>
             </div>
             <div>
               <strong>Telefon & WhatsApp</strong>
               <div>
-                Telefon: <a id="tel-link" href="tel:+491701234567">+49 170 1234567</a><br />
-                WhatsApp: <a id="whatsapp-text-link" href="https://wa.me/491701234567">Chat starten</a>
+                Telefon: <a id="tel-link" href="tel:+4915731329868">01573 1329868</a><br />
+                WhatsApp: <a data-whatsapp-link href="https://wa.me/4915731329868">Chat starten</a>
               </div>
             </div>
             <div>
